@@ -1,4 +1,4 @@
-person
+human
 bicycle
 car
 motorcycle
