@@ -170,6 +170,24 @@ class MainActivity : AppCompatActivity(), Detector.DetectorListener {
             requestPermissionLauncher.launch(REQUIRED_PERMISSIONS)
         }
     }
+    private fun updateObjectCount(boundingBoxes: List<BoundingBox>) {
+        // Map to store the count of objects by class
+        val objectCountMap = mutableMapOf<String, Int>()
+
+        // Iterate through each bounding box to count objects by class
+        boundingBoxes.forEach { box ->
+            val label = box.clsName
+            objectCountMap[label] = objectCountMap.getOrDefault(label, 0) + 1
+        }
+
+        // Create a display string from the object count map
+        val objectCountText = objectCountMap.entries.joinToString("\n") {
+            "${it.key}: ${it.value}"
+        }
+
+        // Update the TextView with the object count string
+        binding.objectCount.text = objectCountText
+    }
 
     companion object {
         private const val TAG = "Camera"
@@ -192,6 +210,7 @@ class MainActivity : AppCompatActivity(), Detector.DetectorListener {
                 setResults(boundingBoxes)
                 invalidate()
             }
+            updateObjectCount(boundingBoxes)
         }
     }
 }
